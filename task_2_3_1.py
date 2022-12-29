@@ -11,6 +11,7 @@ import pdfkit
 
 class Vacancy:
     """
+    
     Класс для представления вакансии.
     Attribytes:
         vacancy ({}): Словарь с данными о вакансии
@@ -22,6 +23,7 @@ class Vacancy:
 
     def __init__(self, vacancy):
         """
+        
         Инициализирует объект Vacancy, выполняет конвертацию для целочисленных полей
         Args:
             vacancy ({}): словарь с данными
@@ -37,6 +39,7 @@ class Vacancy:
 
 class DataSet:
     """
+    
         Отвечает за чтение и подготовку данных из CSV-файла (универсальный парсер CSV)
     """
 
@@ -52,7 +55,7 @@ class DataSet:
 
     @staticmethod
     def increment_dict(dictionary, key, amount):
-        """Увеличивает словарь на определённое количество"""
+        """ Увеличивает словарь на определённое количество"""
         if key in dictionary:
             dictionary[key] += amount
         else:
@@ -60,14 +63,14 @@ class DataSet:
 
     @staticmethod
     def get_average(dictionary):
-        """Находит среднее значение словаря"""
+        """ Находит среднее значение словаря"""
         new_dictionary = {}
         for key, values in dictionary.items():
             new_dictionary[key] = int(sum(values) / len(values))
         return new_dictionary
 
     def csv_reader(self):
-        """Читает csv файл"""
+        """ Читает csv файл"""
         with open(self.file_name, mode='r', encoding='utf-8-sig') as file:
             reader = csv.reader(file)
             header = next(reader)
@@ -77,7 +80,7 @@ class DataSet:
                     yield dict(zip(header, row))
 
     def get_data(self):
-        """Получает данные о вакансиях на освновании полей созданного объекта
+        """ Получает данные о вакансиях на освновании полей созданного объекта
 
         :returns (data1, vacancies_number, data2, vacancies_number_by_name, data3, data5): Статистика по зп, статистика по
                 числу вакансий, статистика вакансий по ЗП, статистика вакансий по названию, статистика вакансий по городам
@@ -122,7 +125,7 @@ class DataSet:
 
     @staticmethod
     def print_data(data1, data2, data3, data4, data5, data6):
-        """Печатает данные в консоль"""
+        """ Печатает данные в консоль"""
         print('Динамика уровня зарплат по годам: {0}'.format(data1))
         print('Динамика количества вакансий по годам: {0}'.format(data2))
         print('Динамика уровня зарплат по годам для выбранной профессии: {0}'.format(data3))
@@ -132,7 +135,8 @@ class DataSet:
 
 
 class InputConnect:
-    """отвечает за обработку параметров вводимых пользователем:
+    """ 
+    отвечает за обработку параметров вводимых пользователем:
     фильтры, сортировка, диапазон вывода, требуемые столбцы, а также за печать таблицы на экран
     """
 
@@ -153,7 +157,7 @@ class InputConnect:
 
 
 class Report:
-    """Основной класс с логикой. Генерирует отчеты XLSX,  PNG, PDF"""
+    """ Основной класс с логикой. Генерирует отчеты XLSX,  PNG, PDF"""
 
     def __init__(self, vacancy_name, data1, data2, data3, data4, data5, data6):
         """Инициализирует объект отчёта"""
@@ -167,7 +171,7 @@ class Report:
         self.data6 = data6
 
     def create_excel_table(self):
-        """Создаёт табличный файл отчёта"""
+        """ Создаёт табличный файл отчёта"""
         ws_active = self.wb.active
         ws_active.title = 'Статистика по годам'
         ws_active.append(['Год', 'Средняя зарплата', 'Средняя зарплата - ' + self.vacancy_name, 'Количество вакансий',
@@ -229,7 +233,7 @@ class Report:
                 ws_active[col + str(row + 1)].border = Border(left=thin, bottom=thin, right=thin, top=thin)
 
     def create_image(self):
-        """Создаёт PNG-ищображение графиков"""
+        """ Создаёт PNG-ищображение графиков"""
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(nrows=2, ncols=2)
 
         bar1 = ax1.bar(np.array(list(self.data1.keys())) - 0.4, self.data1.values(), width=0.4)
@@ -267,7 +271,7 @@ class Report:
         plt.savefig('graph.png')
 
     def create_pdf(self):
-        """Создаёт PDF-документ со статистикой"""
+        """ Создаёт PDF-документ со статистикой"""
         env = Environment(loader=FileSystemLoader('../templates'))
         template = env.get_template("pdf.html")
         data = []
@@ -292,5 +296,5 @@ class Report:
         pdfkit.from_string(pdf_template, 'report.pdf', configuration=config, options={"enable-local-file-access": ""})
 
     def save(self, filename):
-        """Сохраняет xlsx файл"""
+        """ Сохраняет xlsx файл"""
         self.wb.save(filename=filename)
