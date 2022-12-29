@@ -1,4 +1,5 @@
-/.idea
+.idea
 /venv
-/path/to/vacancies.csv
-
+/src/version/__pycache__
+/src/version/__pycache__
+/tests/__pycache__
