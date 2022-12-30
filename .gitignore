@@ -1,0 +1,5 @@
+.idea
+/venv
+vacancies_by_year.csv
+/src/version/__pycache__
+/tests/__pycache__
